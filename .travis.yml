@@ -12,6 +12,6 @@ install:
   - pip install .
   - pip install pytest pytest-cov pytest-django django_factory_boy codecov
 script:
-  - pytest --cov=./django_und
+  - py.test --cov=./django_und
 after_success:
   - codecov
