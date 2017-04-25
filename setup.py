@@ -4,6 +4,7 @@ from setuptools import find_packages
 __version__ = "1.0.0"
 
 install_requires = [
+    "django"
 ]
 
 tests_require = [
@@ -11,7 +12,8 @@ tests_require = [
     "pytest-cov",
     "pytest-django",
     "factory-boy",
-    "django-factory-boy",
+    "django_factory_boy"
+    "codecov"
 ]
 
 extras = {
