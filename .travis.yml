@@ -6,10 +6,9 @@ python:
   - "3.5"
   - "3.6"
   - "3.6-dev" # 3.6 development branch
-  - "nightly" # currently points to 3.7-dev
 install:
   - pip install .
-  - pip install tox tox-travis
+  - pip install tox-travis
   - pip install pytest pytest-cov pytest-django django_factory_boy codecov
 script:
   - tox
