@@ -11,7 +11,6 @@ tests_require = [
     "pytest",
     "pytest-cov",
     "pytest-django",
-    "factory-boy",
     "django_factory_boy",
     "codecov"
 ]
