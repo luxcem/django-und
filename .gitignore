@@ -2,7 +2,9 @@ __pycache__
 *.pyc
 *.egg-info
 .eggs/
+.tox/
 .cache
+
 
 # testing
 htmlcov
