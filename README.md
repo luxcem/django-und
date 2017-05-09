@@ -9,7 +9,33 @@ A django app that adds upvote and downvote to your models
 
 ## Usage
 
-No documentation yet, see [**tests**](https://github.com/luxcem/django-und/tree/master/tests) to see exhaustive usage examples.
+Add **VoteMixin** to your models.
+
+```python
+from django.contrib.auth.models import User
+from django.db import models
+
+from django_und.models import VoteMixin
+
+class Article(VoteMixin, models.Model):
+    title = models.CharField('title', max_length=200)
+    content = models.TextField('content')
+```
+
+Upvote and downvote :
+
+```python
+article = Article(title="Test Article", content="Lorem Ipsum")
+article.upvote(user)  # user is a instance of settings.AUTH_USER_MODEL
+article.und_score  # 1
+article.und_score_up  # 1
+article.und_score_down  # 2
+article.downvote(user)
+```
+
+See
+[**tests**](https://github.com/luxcem/django-und/tree/master/tests) to
+see exhaustive usage examples.
 
 ## License
 
