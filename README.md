@@ -29,7 +29,7 @@ article = Article(title="Test Article", content="Lorem Ipsum")
 article.upvote(user)  # user is a instance of settings.AUTH_USER_MODEL
 article.und_score  # 1
 article.und_score_up  # 1
-article.und_score_down  # 2
+article.und_score_down  # 0
 article.downvote(user)
 ```
 
