@@ -24,7 +24,7 @@ setup(
     name="django-und",
     packages=find_packages(),
     version=__version__,
-    description=("Django Up and Down, django app"
+    description=("Django Up and Down, django app "
                  "to add upvote and downvote to models"),
     author="luxcem",
     author_email="a@luxcem.fr",

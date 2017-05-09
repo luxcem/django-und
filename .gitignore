@@ -4,7 +4,7 @@ __pycache__
 .eggs/
 .tox/
 .cache
-
+dist/
 
 # testing
 htmlcov
