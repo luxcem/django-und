@@ -30,16 +30,14 @@ class TestVote(TestCase):
         self.article.upvote(self.user)
         assert len(self.article.und_votes.all()) == 1
         vote = self.article.und_votes.all()[0]
-        assert str(vote) == "{}:{}:{}".format(
-            self.user, self.article, 1)
+        assert str(vote) == "{}:{}:{}".format(self.user, self.article, 1)
 
     def test_model_username(self):
         with self.settings(UND_USE_USERNAME=True):
             self.article.upvote(self.user.username)
             assert len(self.article.und_votes.all()) == 1
             vote = self.article.und_votes.all()[0]
-            assert str(vote) == "{}:{}:{}".format(
-                self.user.username, self.article, 1)
+            assert str(vote) == "{}:{}:{}".format(self.user.username, self.article, 1)
 
     def test_upvote(self):
         self.article.upvote(self.user)

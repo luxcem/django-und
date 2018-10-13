@@ -17,9 +17,12 @@ class Vote(models.Model):
     user this allows the model to be used with various authentification
     policies.
     """
+
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
-        related_name="und_votes"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="und_votes",
     )
     username = models.CharField(max_length=255, null=True)
     score = models.IntegerField(default=1)
@@ -34,10 +37,8 @@ class Vote(models.Model):
     def __str__(self):
         """Return user, object, and score."""
         if getattr(settings, "UND_USE_USERNAME", False):
-            return "{}:{}:{}".format(
-                self.username, self.content_object, self.score)
-        return "{}:{}:{}".format(
-            self.user, self.content_object, self.score)
+            return "{}:{}:{}".format(self.username, self.content_object, self.score)
+        return "{}:{}:{}".format(self.user, self.content_object, self.score)
 
     @classmethod
     def vote_with_user_object(cls, content_object, user_object, score):
@@ -48,14 +49,14 @@ class Vote(models.Model):
         """
         if getattr(settings, "UND_USE_USERNAME", False):
             return Vote(
-                content_object=content_object,
-                username=user_object, score=score)
-        return Vote(
-            content_object=content_object, user=user_object, score=score)
+                content_object=content_object, username=user_object, score=score
+            )
+        return Vote(content_object=content_object, user=user_object, score=score)
 
 
 class VoteMixin(models.Model):
     """Mixin to attach to a model that has up and down votes."""
+
     und_votes = GenericRelation(Vote)
     und_score_up = models.IntegerField(default=0)
     und_score_down = models.IntegerField(default=0)
@@ -98,7 +99,8 @@ class VoteMixin(models.Model):
                 diff_up = 1
         except Vote.DoesNotExist:
             vote = Vote.vote_with_user_object(
-                content_object=self, user_object=user_object, score=1)
+                content_object=self, user_object=user_object, score=1
+            )
             vote.save()
             # Create an upvote
             diff_up = 1
@@ -108,7 +110,7 @@ class VoteMixin(models.Model):
         # Update self score, use update and filter to avoid triggering signals
         self.__class__.objects.filter(id=self.id).update(
             und_score_up=F("und_score_up") + diff_up,
-            und_score_down=F("und_score_down") + diff_down
+            und_score_down=F("und_score_down") + diff_down,
         )
 
     def downvote(self, user_object):
@@ -135,7 +137,8 @@ class VoteMixin(models.Model):
                 diff_down = -1
         except Vote.DoesNotExist:
             vote = Vote.vote_with_user_object(
-                content_object=self, user_object=user_object, score=-1)
+                content_object=self, user_object=user_object, score=-1
+            )
             vote.save()
             # Create downvote
             diff_down = -1
@@ -145,19 +148,22 @@ class VoteMixin(models.Model):
         # Update self score, use update and filter to avoid triggering signals
         self.__class__.objects.filter(id=self.id).update(
             und_score_up=F("und_score_up") + diff_up,
-            und_score_down=F("und_score_down") + diff_down
+            und_score_down=F("und_score_down") + diff_down,
         )
 
     def reset_und_score(self):
         """Reset score to the correct count (should not be necessary)."""
-        score_up = self.und_votes.filter(
-            score__gt=0).aggregate(Sum('score'))['score__sum'] or 0
-        score_down = self.und_votes.filter(
-            score__lt=0).aggregate(Sum('score'))['score__sum'] or 0
+        score_up = (
+            self.und_votes.filter(score__gt=0).aggregate(Sum("score"))["score__sum"]
+            or 0
+        )
+        score_down = (
+            self.und_votes.filter(score__lt=0).aggregate(Sum("score"))["score__sum"]
+            or 0
+        )
         self.und_score_up = score_up
         self.und_score_down = score_down
         # Update self score, use update and filter to avoid triggering signals
         self.__class__.objects.filter(id=self.id).update(
-            und_score_up=score_up,
-            und_score_down=score_down
+            und_score_up=score_up, und_score_down=score_down
         )
